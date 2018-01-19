@@ -6,12 +6,16 @@ from PIL import Image
 from torchvision import transforms
 import matplotlib.pyplot as plt
 from torchvision.utils import save_image
-
+import os
 
 class IOUtils(object):
-    def __init__(self, is_cuda=False):
+    def __init__(self, is_cuda=False, desc=''):
         # self.set_default_tensor_type(is_cuda)
         self.is_cuda = is_cuda
+        if desc != '':
+            self.viz_dir = 'viz_stl10/{}'.format(desc)
+            os.makedirs('viz_stl10/{}/code'.format(desc), exist_ok=True)
+            os.makedirs('viz_stl10/{}/recon'.format(desc), exist_ok=True)
 
     # def set_default_tensor_type(self, is_cuda=False):
     #     self.is_cuda = is_cuda
@@ -53,7 +57,7 @@ class IOUtils(object):
         # print(tsr_show_data)
         del tsr_show_data
 
-    def show_trainval_image(self, *args):
+    def show_trainval_image(self, fp, *args):
 
         # plt.ion()
         plt.figure(0)
@@ -75,7 +79,7 @@ class IOUtils(object):
             plt.subplot(1, num_subplots, ii)
             plt.imshow(tsr_data)
             plt.axis('off')
-            plt.savefig('viz/recon/fig_{:05d}.jpg'.format(self.fig_counter))
+            plt.savefig(fp)
         # plt.waitforbuttonpress(0.01)
         # plt.subplot(1, 2, 2)
         # plt.imshow(tsr_valid)
